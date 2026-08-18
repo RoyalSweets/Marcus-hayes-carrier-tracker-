@@ -1,825 +1,820 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Marcus Hayes — Carrier Tracker</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Field Practice — Conversation Trainer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-:root {
-  --bg:#ffffff; --bg2:#f5f5f4; --bg3:#ebebea;
-  --text:#1a1a18; --text2:#6b6b67; --text3:#a0a09c;
-  --border:rgba(0,0,0,0.11); --border2:rgba(0,0,0,0.2);
-  --green:#1D9E75; --green-bg:#e1f5ee; --green-text:#085041;
-  --amber:#EF9F27; --amber-bg:#faeeda; --amber-text:#633806;
-  --blue-bg:#e6f1fb; --blue-text:#0c447c;
-  --red:#d93025; --red-bg:#fce8e6; --red-text:#6e1007;
-  --radius:8px; --radius-lg:12px;
-  --font:system-ui,-apple-system,sans-serif; --mono:ui-monospace,monospace;
-  --shadow:0 4px 20px rgba(0,0,0,0.10);
-}
-body { font-family:var(--font); background:#f0efec; color:var(--text); min-height:100vh; }
-.shell { max-width:980px; margin:0 auto; padding:2rem 1.25rem; }
+  :root{
+    --bg:#0F1B2D;
+    --surface:#16243A;
+    --surface-raised:#1E2E47;
+    --border:#263A56;
+    --amber:#E8A33D;
+    --amber-dim:#B87F2C;
+    --teal:#4FA79B;
+    --coral:#D9614F;
+    --text:#EDEFF2;
+    --text-muted:#8FA0B8;
+    --text-faint:#5C6E88;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased;}
+  ::selection{background:var(--amber);color:#111;}
 
-/* HEADER */
-.app-header { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; margin-bottom:1.75rem; padding-bottom:1.25rem; border-bottom:0.5px solid var(--border2); }
-.app-title { font-size:21px; font-weight:700; color:var(--text); }
-.app-sub { font-size:13px; color:var(--text2); margin-top:3px; }
-.header-right { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+  .shell{display:flex;min-height:100vh;}
 
-/* BADGES */
-.badge { font-size:11px; padding:3px 9px; border-radius:var(--radius); font-weight:600; white-space:nowrap; display:inline-block; }
-.badge-active { background:var(--green-bg); color:var(--green-text); }
-.badge-pending { background:var(--amber-bg); color:var(--amber-text); }
-.badge-progress { background:var(--blue-bg); color:var(--blue-text); }
+  /* SIDEBAR */
+  .sidebar{width:220px;flex-shrink:0;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;padding:24px 16px;position:sticky;top:0;height:100vh;}
+  .brand{display:flex;align-items:center;gap:10px;padding:0 8px 24px 8px;border-bottom:1px solid var(--border);margin-bottom:20px;}
+  .brand-mark{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--amber),var(--amber-dim));display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .brand-mark svg{width:18px;height:18px;}
+  .brand-name{font-family:'Fraunces',serif;font-weight:600;font-size:15.5px;line-height:1.2;}
+  .brand-sub{font-size:11px;color:var(--text-faint);letter-spacing:.04em;}
 
-/* NAV */
-nav { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:1.5rem; }
-.nav-btn { background:var(--bg); border:0.5px solid var(--border2); border-radius:var(--radius); padding:7px 15px; font-size:13px; cursor:pointer; color:var(--text2); transition:all 0.15s; font-family:var(--font); }
-.nav-btn.active { background:var(--blue-bg); color:var(--blue-text); border-color:transparent; font-weight:700; }
-.nav-btn:hover:not(.active) { background:var(--bg2); color:var(--text); }
-.section { display:none; }
-.section.active { display:block; }
+  .navitem{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:10px;color:var(--text-muted);cursor:pointer;font-size:14px;font-weight:500;margin-bottom:2px;transition:background .15s,color .15s;user-select:none;}
+  .navitem svg{width:17px;height:17px;flex-shrink:0;opacity:.85;}
+  .navitem:hover{background:var(--surface-raised);color:var(--text);}
+  .navitem.active{background:var(--surface-raised);color:var(--amber);}
+  .navitem.active svg{opacity:1;}
 
-/* METRICS */
-.grid-4 { display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:12px; margin-bottom:1.5rem; }
-.metric { background:var(--bg2); border-radius:var(--radius); padding:1rem; }
-.metric-label { font-size:12px; color:var(--text2); margin-bottom:4px; }
-.metric-val { font-size:24px; font-weight:700; color:var(--text); }
+  .sidebar-footer{margin-top:auto;padding-top:16px;border-top:1px solid var(--border);font-size:11.5px;color:var(--text-faint);line-height:1.5;}
 
-/* TOOLBAR */
-.toolbar { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:1rem; align-items:center; }
-.filter-bar { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:1.25rem; align-items:center; }
-.filter-btn { font-size:12px; padding:5px 13px; border-radius:100px; border:0.5px solid var(--border2); background:transparent; cursor:pointer; color:var(--text2); font-family:var(--font); transition:all 0.12s; }
-.filter-btn.on { background:var(--bg); color:var(--text); border-color:var(--border2); font-weight:700; box-shadow:0 1px 4px rgba(0,0,0,0.08); }
-.search-input { border:0.5px solid var(--border2); border-radius:var(--radius); padding:7px 11px; font-size:13px; background:var(--bg); color:var(--text); width:210px; font-family:var(--font); outline:none; }
-.search-input:focus { border-color:#378add; box-shadow:0 0 0 2px rgba(55,138,221,0.15); }
+  /* MAIN */
+  .main{flex:1;min-width:0;padding:32px 40px 60px 40px;max-width:980px;}
+  .view{display:none;}
+  .view.active{display:block;animation:fadein .25s ease;}
+  @keyframes fadein{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
 
-/* BUTTONS */
-.btn { display:inline-flex; align-items:center; gap:5px; font-size:13px; font-family:var(--font); padding:7px 13px; border-radius:var(--radius); border:0.5px solid var(--border2); cursor:pointer; transition:all 0.12s; background:var(--bg); color:var(--text2); }
-.btn:hover { background:var(--bg2); color:var(--text); }
-.btn-primary { background:var(--blue-bg); color:var(--blue-text); border-color:transparent; font-weight:600; }
-.btn-primary:hover { background:#d0e8f8; }
-.btn-success { background:var(--green-bg); color:var(--green-text); border-color:transparent; font-weight:600; }
-.btn-success:hover { background:#c5ede0; }
-.btn-danger { background:transparent; color:var(--text2); }
-.btn-danger:hover { background:var(--red-bg); color:var(--red-text); border-color:var(--red); }
-.btn-sm { padding:4px 9px; font-size:12px; }
-.btn-icon { padding:5px 8px; }
+  h1.page-title{font-family:'Fraunces',serif;font-weight:600;font-size:28px;margin:0 0 4px 0;letter-spacing:-.01em;}
+  .page-sub{color:var(--text-muted);font-size:14px;margin:0 0 28px 0;}
 
-/* CARRIER GRID */
-.carrier-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(290px,1fr)); gap:12px; }
-.carrier-card { background:var(--bg); border:0.5px solid var(--border); border-radius:var(--radius-lg); padding:1rem 1.25rem; }
-.carrier-card.active-card { border-left:3px solid var(--green); border-radius:0 var(--radius-lg) var(--radius-lg) 0; }
-.carrier-card.pending-card { border-left:3px solid var(--amber); border-radius:0 var(--radius-lg) var(--radius-lg) 0; }
-.card-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px; gap:8px; }
-.carrier-name { font-size:15px; font-weight:700; color:var(--text); }
-.carrier-sub { font-size:12px; color:var(--text2); margin-top:2px; }
-.card-row { display:flex; justify-content:space-between; align-items:center; padding:5px 0; border-bottom:0.5px solid var(--border); font-size:13px; }
-.card-row:last-of-type { border-bottom:none; }
-.row-label { color:var(--text2); display:flex; align-items:center; gap:5px; white-space:nowrap; }
-.row-val { color:var(--text); font-weight:600; text-align:right; max-width:57%; word-break:break-word; }
-.mono { font-family:var(--mono); font-size:12px; background:var(--bg2); padding:2px 6px; border-radius:4px; }
-.product-tags { display:flex; flex-wrap:wrap; gap:4px; margin-top:5px; }
-.ptag { font-size:11px; background:var(--bg2); color:var(--text2); border-radius:100px; padding:2px 8px; }
-.state-pill { font-size:11px; font-weight:700; padding:2px 8px; border-radius:100px; }
-.state-va { background:var(--blue-bg); color:var(--blue-text); }
-.state-sc { background:var(--green-bg); color:var(--green-text); }
-.card-note { margin-top:10px; font-size:12px; color:var(--text2); border-top:0.5px solid var(--border); padding-top:8px; font-style:italic; }
-.card-reminder { margin-top:8px; font-size:12px; background:var(--amber-bg); color:var(--amber-text); border-radius:6px; padding:6px 10px; display:flex; align-items:flex-start; gap:6px; }
+  .eyebrow{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--amber);font-weight:600;margin-bottom:6px;}
 
-/* MODAL */
-.overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.45); z-index:999; align-items:center; justify-content:center; padding:1rem; }
-.overlay.open { display:flex; }
-.modal { background:var(--bg); border-radius:var(--radius-lg); padding:1.5rem; width:100%; max-width:560px; max-height:92vh; overflow-y:auto; box-shadow:var(--shadow); }
-.modal-title { font-size:17px; font-weight:700; margin-bottom:1.25rem; color:var(--text); display:flex; align-items:center; gap:8px; }
-.form-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:14px; }
-.form-row { margin-bottom:14px; }
-.form-label { font-size:11px; font-weight:700; color:var(--text2); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:5px; display:block; }
-.form-input, .form-select, .form-textarea { width:100%; border:0.5px solid var(--border2); border-radius:var(--radius); padding:8px 10px; font-size:13px; font-family:var(--font); color:var(--text); background:var(--bg); outline:none; }
-.form-input:focus, .form-select:focus, .form-textarea:focus { border-color:#378add; box-shadow:0 0 0 2px rgba(55,138,221,0.15); }
-.form-textarea { resize:vertical; min-height:70px; }
-.checkbox-group { display:flex; gap:1.5rem; margin-top:6px; }
-.checkbox-label { display:flex; align-items:center; gap:6px; font-size:13px; cursor:pointer; }
-.checkbox-label input { width:15px; height:15px; cursor:pointer; accent-color:var(--blue-text); }
-.modal-footer { display:flex; justify-content:flex-end; gap:8px; margin-top:1.25rem; padding-top:1rem; border-top:0.5px solid var(--border); align-items:center; }
-.modal-footer-left { margin-right:auto; }
-.divider { height:0.5px; background:var(--border); margin:1rem 0; }
+  /* ---- PRACTICE VIEW ---- */
+  .setup-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px;}
+  .field label{display:block;font-size:12px;color:var(--text-muted);margin-bottom:6px;font-weight:500;}
+  select{width:100%;background:var(--surface);border:1px solid var(--border);color:var(--text);padding:10px 12px;border-radius:10px;font-size:13.5px;font-family:'Inter',sans-serif;cursor:pointer;}
+  select:focus{outline:none;border-color:var(--amber);}
 
-/* INFO BLOCKS */
-.section-title { font-size:18px; font-weight:700; margin-bottom:1.25rem; color:var(--text); }
-.info-block { background:var(--bg); border:0.5px solid var(--border); border-radius:var(--radius-lg); padding:1rem 1.25rem; margin-bottom:1rem; }
-.info-block h3 { font-size:15px; font-weight:700; color:var(--text); margin-bottom:10px; display:flex; align-items:center; gap:8px; }
-.ct { width:100%; font-size:13px; border-collapse:collapse; }
-.ct td { padding:7px 0; vertical-align:top; border-bottom:0.5px solid var(--border); }
-.ct tr:last-child td { border-bottom:none; }
-.ct td:first-child { color:var(--text2); width:40%; }
-.ct td:last-child { font-weight:500; word-break:break-word; }
-.alert-box { background:var(--amber-bg); border-radius:var(--radius); padding:10px 14px; font-size:13px; color:var(--amber-text); margin-bottom:12px; display:flex; gap:8px; align-items:flex-start; }
-.success-box { background:var(--green-bg); border-radius:var(--radius); padding:10px 14px; font-size:13px; color:var(--green-text); margin-bottom:10px; display:flex; gap:8px; align-items:flex-start; }
-.needs-update { color:var(--text3); font-style:italic; }
-.imo-card { background:var(--bg); border:0.5px solid var(--border); border-radius:var(--radius-lg); padding:1rem 1.25rem; margin-bottom:10px; }
+  .rapport-wrap{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:18px;display:flex;align-items:center;gap:14px;}
+  .rapport-label{font-size:12px;color:var(--text-muted);font-weight:600;white-space:nowrap;}
+  .rapport-track{flex:1;height:8px;background:var(--surface-raised);border-radius:6px;overflow:hidden;position:relative;}
+  .rapport-fill{height:100%;background:linear-gradient(90deg,var(--coral),var(--amber) 55%,var(--teal));width:50%;transition:width .5s ease;border-radius:6px;}
+  .rapport-val{font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--teal);width:36px;text-align:right;}
 
-/* PRODUCTS */
-.pt-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(270px,1fr)); gap:12px; }
-.pt-card { background:var(--bg); border:0.5px solid var(--border); border-radius:var(--radius-lg); padding:1rem 1.25rem; }
-.pt-header { font-size:12px; font-weight:700; color:var(--text2); text-transform:uppercase; letter-spacing:0.07em; margin-bottom:10px; padding-bottom:8px; border-bottom:0.5px solid var(--border); }
-.product-item { padding:6px 0; border-bottom:0.5px solid var(--border); font-size:13px; }
-.product-item:last-child { border-bottom:none; }
-.pi-name { font-weight:600; color:var(--text); }
-.pi-carrier { color:var(--text2); font-size:12px; }
-.pi-note { font-size:11px; color:var(--text3); margin-top:2px; }
+  .chatpane{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);height:440px;display:flex;flex-direction:column;overflow:hidden;}
+  .chatlog{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:14px;}
+  .msg{max-width:80%;padding:11px 14px;border-radius:12px;font-size:14px;line-height:1.5;}
+  .msg.me{align-self:flex-end;background:var(--amber);color:#1a1305;border-bottom-right-radius:3px;}
+  .msg.prospect{align-self:flex-start;background:var(--surface-raised);color:var(--text);border-bottom-left-radius:3px;}
+  .msg.coach{align-self:center;background:transparent;border:1px dashed var(--border);color:var(--teal);font-size:12.5px;font-style:italic;max-width:90%;padding:8px 12px;}
+  .msg.system-empty{align-self:center;color:var(--text-faint);font-size:13px;font-style:italic;}
 
-/* LOGINS TABLE */
-.login-row td { padding:7px 0; border-bottom:0.5px solid var(--border); font-size:13px; }
-.pw-toggle { background:transparent; border:none; cursor:pointer; color:var(--text2); font-size:15px; padding:0 3px; }
-.pw-toggle:hover { color:var(--text); }
+  .composer{border-top:1px solid var(--border);padding:12px;display:flex;gap:10px;}
+  .composer textarea{flex:1;resize:none;background:var(--surface-raised);border:1px solid var(--border);color:var(--text);border-radius:10px;padding:10px 12px;font-family:'Inter',sans-serif;font-size:14px;height:44px;}
+  .composer textarea:focus{outline:none;border-color:var(--amber);}
+  button.send{background:var(--amber);border:none;color:#1a1305;font-weight:700;padding:0 20px;border-radius:10px;cursor:pointer;font-size:13.5px;}
+  button.send:disabled{opacity:.5;cursor:default;}
+  button.send:hover:not(:disabled){background:#f0af4c;}
+  button.mic{width:46px;min-width:46px;border:1px solid var(--border);background:var(--surface-raised);color:var(--text);border-radius:10px;cursor:pointer;font-size:19px;display:flex;align-items:center;justify-content:center;transition:all .15s;}
+  button.mic:hover{border-color:var(--amber);color:var(--amber);}
+  button.mic.listening{background:var(--coral);border-color:var(--coral);color:white;box-shadow:0 0 0 3px rgba(217,97,79,.18);}
+  button.mic:disabled{opacity:.45;cursor:not-allowed;}
+  button.speaker{background:transparent;border:1px solid var(--border);color:var(--text-muted);padding:7px 12px;border-radius:9px;font-size:12.5px;cursor:pointer;display:flex;align-items:center;gap:6px;}
+  button.speaker:hover{border-color:var(--amber);color:var(--amber);}
+  button.speaker.on{border-color:var(--teal);color:var(--teal);background:rgba(79,167,155,.08);}
 
-/* REMINDERS TAB */
-.reminder-item { background:var(--bg); border:0.5px solid var(--border); border-radius:var(--radius-lg); padding:1rem 1.25rem; margin-bottom:10px; display:flex; align-items:flex-start; gap:12px; }
-.reminder-item.done { opacity:0.5; }
-.reminder-check { width:18px; height:18px; accent-color:var(--green); cursor:pointer; margin-top:2px; flex-shrink:0; }
-.reminder-text { flex:1; }
-.reminder-carrier { font-size:12px; color:var(--text2); margin-bottom:2px; }
-.reminder-body { font-size:14px; font-weight:500; color:var(--text); }
-.reminder-date { font-size:11px; color:var(--text3); margin-top:3px; }
+  .toolbar-row{display:flex;justify-content:space-between;align-items:center;margin-top:10px;}
+  button.ghost{background:transparent;border:1px solid var(--border);color:var(--text-muted);padding:7px 13px;border-radius:9px;font-size:12.5px;cursor:pointer;}
+  button.ghost:hover{border-color:var(--amber);color:var(--amber);}
 
-/* TOAST */
-.toast { position:fixed; bottom:1.5rem; right:1.5rem; background:#1a1a18; color:#fff; padding:10px 16px; border-radius:var(--radius); font-size:13px; font-weight:500; z-index:9999; opacity:0; transform:translateY(8px); transition:all 0.25s; pointer-events:none; max-width:280px; }
-.toast.show { opacity:1; transform:translateY(0); }
+  .typing-dots span{display:inline-block;width:5px;height:5px;background:var(--text-muted);border-radius:50%;margin-right:3px;animation:blink 1.2s infinite;}
+  .typing-dots span:nth-child(2){animation-delay:.2s;}
+  .typing-dots span:nth-child(3){animation-delay:.4s;}
+  @keyframes blink{0%,80%,100%{opacity:.2;}40%{opacity:1;}}
 
-/* ADD CARRIER DASHED */
-.add-card { display:flex; align-items:center; justify-content:center; gap:8px; background:var(--bg); border:1.5px dashed var(--border2); border-radius:var(--radius-lg); padding:1.5rem; cursor:pointer; color:var(--text2); font-size:14px; font-family:var(--font); transition:all 0.15s; }
-.add-card:hover { background:var(--bg2); color:var(--text); border-color:var(--text3); }
+  /* ---- SCRIPTS VIEW ---- */
+  .script-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;margin-bottom:14px;}
+  .script-card h3{font-family:'Fraunces',serif;font-weight:600;font-size:16px;margin:0 0 8px 0;color:var(--amber);}
+  .script-card p, .script-card li{font-size:13.5px;color:var(--text);line-height:1.65;}
+  .script-card .tag{display:inline-block;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--text-faint);border:1px solid var(--border);border-radius:5px;padding:2px 7px;margin-bottom:10px;}
+  .script-card ul{margin:6px 0;padding-left:18px;}
+  .script-card blockquote{margin:8px 0;padding:10px 14px;border-left:3px solid var(--teal);background:var(--surface-raised);border-radius:0 8px 8px 0;font-size:13.5px;color:var(--text-muted);white-space:pre-line;}
 
-@media(max-width:600px) {
-  .shell { padding:1rem; }
-  .carrier-grid,.pt-grid { grid-template-columns:1fr; }
-  .search-input { width:100%; }
-  .form-grid { grid-template-columns:1fr; }
-}
+  /* ---- TRACKER VIEW ---- */
+  .tracker-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:24px;}
+  .metric-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px;}
+  .metric-name{font-size:12.5px;color:var(--text-muted);font-weight:600;margin-bottom:10px;}
+  .metric-row{display:flex;align-items:center;justify-content:space-between;}
+  .metric-count{font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:600;}
+  .metric-goal{font-size:11.5px;color:var(--text-faint);margin-top:2px;}
+  .stepbtns{display:flex;gap:6px;}
+  .stepbtn{width:28px;height:28px;border-radius:8px;border:1px solid var(--border);background:var(--surface-raised);color:var(--text);cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;}
+  .stepbtn:hover{border-color:var(--amber);color:var(--amber);}
+  .metric-bar{height:5px;background:var(--surface-raised);border-radius:3px;overflow:hidden;margin-top:12px;}
+  .metric-bar-fill{height:100%;background:var(--teal);border-radius:3px;transition:width .3s;}
+
+  .shield-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;display:flex;align-items:center;gap:24px;}
+  .shield-svg{flex-shrink:0;}
+  .shield-copy h3{font-family:'Fraunces',serif;font-size:18px;margin:0 0 6px 0;}
+  .shield-copy p{font-size:13px;color:var(--text-muted);margin:0;line-height:1.6;}
+
+  .reset-row{margin-top:18px;display:flex;justify-content:flex-end;}
+
+  @media (max-width:820px){
+    .shell{flex-direction:column;}
+    .sidebar{width:100%;height:auto;position:relative;flex-direction:row;overflow-x:auto;padding:14px;}
+    .brand{display:none;}
+    .sidebar-footer{display:none;}
+    .navitem{white-space:nowrap;}
+    .main{padding:20px;}
+    .setup-grid{grid-template-columns:1fr;}
+    .tracker-grid{grid-template-columns:1fr 1fr;}
+  }
 </style>
 </head>
 <body>
+
 <div class="shell">
-
-  <!-- HEADER -->
-  <div class="app-header">
-    <div>
-      <div class="app-title">Marcus Hayes — Carrier Portfolio</div>
-      <div class="app-sub">Evertrust Legacy Protection Group &nbsp;·&nbsp; VA &amp; SC Licensed &nbsp;·&nbsp; 843-617-0054</div>
+  <div class="sidebar">
+    <div class="brand">
+      <div class="brand-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2L4 5v6c0 5 3.4 8.7 8 10 4.6-1.3 8-5 8-10V5l-8-3z" stroke="#1a1305" stroke-width="2" stroke-linejoin="round"/></svg></div>
+      <div><div class="brand-name">Field Practice</div><div class="brand-sub">Conversation Trainer</div></div>
     </div>
-    <div class="header-right">
-      <span class="badge badge-active" id="hdr-active"></span>
-      <span class="badge badge-pending" id="hdr-pending"></span>
+    <div class="navitem active" data-view="practice">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.4-4 8-9 8a9.7 9.7 0 0 1-4-.8L3 20l1.2-3.5A7.9 7.9 0 0 1 3 12c0-4.4 4-8 9-8s9 3.6 9 8z"/></svg>
+      Roleplay
     </div>
+    <div class="navitem" data-view="scripts">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+      Scripts
+    </div>
+    <div class="navitem" data-view="tracker">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 3v18h18"/><path d="M18 17V9M13 17V5M8 17v-4"/></svg>
+      Tracker
+    </div>
+    <div class="sidebar-footer">Practice outreach, group conversations, and interviews. Every scene partner and coach note is simulated — nothing here sends real messages.</div>
   </div>
 
-  <!-- NAV -->
-  <nav>
-    <button class="nav-btn active" onclick="showSection('carriers',this)"><i class="ti ti-building-bank"></i> Carriers</button>
-    <button class="nav-btn" onclick="showSection('products',this)"><i class="ti ti-list"></i> Products</button>
-    <button class="nav-btn" onclick="showSection('logins',this)"><i class="ti ti-lock"></i> Portal Logins</button>
-    <button class="nav-btn" onclick="showSection('reminders',this)"><i class="ti ti-bell"></i> Reminders <span id="reminder-badge" style="display:none;background:var(--amber);color:#fff;font-size:10px;padding:1px 6px;border-radius:100px;margin-left:3px;"></span></button>
-    <button class="nav-btn" onclick="showSection('licenses',this)"><i class="ti ti-id"></i> Licenses</button>
-    <button class="nav-btn" onclick="showSection('imos',this)"><i class="ti ti-network"></i> IMOs &amp; Direct</button>
-    <button class="nav-btn" onclick="showSection('products2',this)"><i class="ti ti-layout-grid"></i> All Products</button>
-  </nav>
+  <div class="main">
 
-  <!-- ═══════════════ CARRIERS ═══════════════ -->
-  <div id="sec-carriers" class="section active">
-    <div class="grid-4">
-      <div class="metric"><div class="metric-label">Total carriers</div><div class="metric-val" id="m-total">0</div></div>
-      <div class="metric"><div class="metric-label">Active &amp; writing</div><div class="metric-val" id="m-active" style="color:#0F6E56;">0</div></div>
-      <div class="metric"><div class="metric-label">Pending clearance</div><div class="metric-val" id="m-pending" style="color:#BA7517;">0</div></div>
-      <div class="metric"><div class="metric-label">States licensed</div><div class="metric-val">2</div></div>
-    </div>
-    <div class="toolbar">
-      <button class="btn btn-primary" onclick="openCarrierModal()"><i class="ti ti-plus"></i> Add carrier</button>
-      <button class="btn" onclick="exportBackup()"><i class="ti ti-download"></i> Export backup</button>
-      <label class="btn" style="cursor:pointer;"><i class="ti ti-upload"></i> Import backup<input type="file" accept=".json" onchange="importBackup(event)" style="display:none;"/></label>
-    </div>
-    <div class="filter-bar">
-      <input class="search-input" type="text" placeholder="Search carriers…" id="carrier-search" oninput="renderCarriers()" />
-      <button class="filter-btn on" onclick="setFilter(this,'all')">All</button>
-      <button class="filter-btn" onclick="setFilter(this,'active')">Active</button>
-      <button class="filter-btn" onclick="setFilter(this,'pending')">Pending</button>
-      <button class="filter-btn" onclick="setFilter(this,'fe')">Final Expense</button>
-      <button class="filter-btn" onclick="setFilter(this,'health')">Health</button>
-    </div>
-    <div class="carrier-grid" id="carrier-grid"></div>
-  </div>
+    <!-- PRACTICE -->
+    <div class="view active" id="view-practice">
+      <div class="eyebrow">Live Simulation</div>
+      <h1 class="page-title">Practice the conversation, not just the content</h1>
+      <p class="page-sub">Built for word usage and delivery — the kind of thing that matters when you're the Executive Director in the room: interviewing for the role, raising a hard issue with staff or your board, or sitting across from a funder. Pick a scenario, type what you'd actually say, and get coached on pacing, filler words, and vocabulary precision after every line.</p>
 
-  <!-- ═══════════════ PORTAL LOGINS ═══════════════ -->
-  <div id="sec-logins" class="section">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;flex-wrap:wrap;gap:8px;">
-      <p class="section-title" style="margin:0;">Portal Logins</p>
-      <button class="btn btn-primary" onclick="openLoginModal()"><i class="ti ti-plus"></i> Add login</button>
-    </div>
-    <p style="font-size:13px;color:var(--text2);margin-bottom:1rem;"><i class="ti ti-lock" style="vertical-align:-2px;"></i> Saved to your browser only. Click the eye icon to reveal passwords.</p>
-    <div id="login-cards"></div>
-  </div>
-
-  <!-- ═══════════════ REMINDERS ═══════════════ -->
-  <div id="sec-reminders" class="section">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;flex-wrap:wrap;gap:8px;">
-      <p class="section-title" style="margin:0;">Reminders &amp; Follow-ups</p>
-      <button class="btn btn-primary" onclick="openReminderModal()"><i class="ti ti-plus"></i> Add reminder</button>
-    </div>
-    <div id="reminder-list"></div>
-  </div>
-
-  <!-- ═══════════════ LICENSES ═══════════════ -->
-  <div id="sec-licenses" class="section">
-    <p class="section-title">Licenses &amp; Agent Info</p>
-    <div class="info-block">
-      <h3><i class="ti ti-id"></i> State licenses</h3>
-      <table class="ct">
-        <tr><td>Virginia (VA)</td><td>Lic # 15705450 &nbsp;·&nbsp; Exp: 5/31/2028 &nbsp;<span class="badge badge-active">Active</span></td></tr>
-        <tr><td>South Carolina (SC)</td><td>Lic # 16328613 &nbsp;·&nbsp; NPN: 16328613 &nbsp;<span class="badge badge-active">Active</span></td></tr>
-      </table>
-    </div>
-    <div class="info-block">
-      <h3><i class="ti ti-user"></i> Agent info</h3>
-      <table class="ct">
-        <tr><td>Name</td><td>Marcus Hayes</td></tr>
-        <tr><td>Organization</td><td>Evertrust Legacy Protection Group</td></tr>
-        <tr><td>Phone</td><td>843-617-0054</td></tr>
-        <tr><td>Email</td><td>homebridge.foundation@outlook.com</td></tr>
-        <tr><td>FFL Recruiter</td><td>Jessica de Mesa — FFL Carriers</td></tr>
-      </table>
-    </div>
-    <div class="info-block">
-      <h3><i class="ti ti-phone"></i> Carrier quick-dial</h3>
-      <table class="ct" id="quick-dial"></table>
-    </div>
-  </div>
-
-  <!-- ═══════════════ IMOs ═══════════════ -->
-  <div id="sec-imos" class="section">
-    <p class="section-title">IMO Relationships &amp; Direct Appointments</p>
-    <div class="imo-card">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-        <span style="font-size:15px;font-weight:700;">Family First Life (FFL)</span>
-        <span class="badge badge-active">Active — Primary IMO</span>
+      <div class="setup-grid">
+        <div class="field">
+          <label>Scenario</label>
+          <select id="scenarioSelect">
+            <optgroup label="Nonprofit leadership">
+              <option value="edInterview" selected>Interview — Executive Director role</option>
+              <option value="edStaffIssue">Staff meeting — Raising a performance or budget issue</option>
+              <option value="edBoardIssue">Board meeting — Raising a difficult issue with your board</option>
+              <option value="edFunderConvo">Funder meeting — Delivering hard news or making the ask</option>
+            </optgroup>
+            <optgroup label="Group settings">
+              <option value="expertintro">Networking — Introducing yourself as an expert</option>
+              <option value="groupfloor">Group conversation — Making your point land</option>
+              <option value="groupinterrupt">Group conversation — Recovering after being cut off</option>
+            </optgroup>
+            <optgroup label="Interview">
+              <option value="interviewpitch">Interview — "Tell me about yourself"</option>
+              <option value="interviewpressure">Interview — Answering under pressure</option>
+            </optgroup>
+            <optgroup label="Product pitch">
+              <option value="royalSweetsPitch">Pitch — Royal Sweets Boutique app</option>
+            </optgroup>
+            <optgroup label="Business outreach">
+              <option value="day1">Day 1 — First connection message</option>
+              <option value="day3">Day 3 — Follow-up</option>
+              <option value="day5">Day 5 — Value / education message</option>
+              <option value="week2q">Week 2 — Engagement question</option>
+              <option value="discovery">Appointment — Discovery call</option>
+              <option value="objection">Appointment — Handling an objection at close</option>
+              <option value="referral">After the meeting — Asking for a referral</option>
+            </optgroup>
+          </select>
+        </div>
+        <div class="field">
+          <label>Temperament / room energy</label>
+          <select id="tempSelect">
+            <option value="warm">Warm — receptive, gives you openings</option>
+            <option value="neutral" selected>Neutral — polite but needs convincing</option>
+            <option value="skeptical">Skeptical / high-pressure — guarded, talks over you</option>
+          </select>
+        </div>
       </div>
-      <p style="font-size:13px;color:var(--text2);margin-bottom:8px;">Carriers under FFL:</p>
-      <div class="product-tags">
-        <span class="ptag">Corebridge (AIG)</span><span class="ptag">Mutual of Omaha</span><span class="ptag">Americo</span><span class="ptag">American Amicable</span><span class="ptag">Ethos</span><span class="ptag">CVS / Aetna</span><span class="ptag">Foresters</span>
+
+      <div class="rapport-wrap">
+        <div class="rapport-label">Rapport</div>
+        <div class="rapport-track"><div class="rapport-fill" id="rapportFill"></div></div>
+        <div class="rapport-val" id="rapportVal">50</div>
+      </div>
+
+      <div class="chatpane">
+        <div class="chatlog" id="chatlog">
+          <div class="msg system-empty" id="emptyState">Choose a scenario above and send your opening line to begin.</div>
+        </div>
+        <div class="composer">
+          <textarea id="composerInput" placeholder="Type or tap the mic and speak your response."></textarea>
+          <button class="mic" id="micBtn" type="button" title="Speak your response" aria-label="Speak your response">🎙️</button>
+          <button class="send" id="sendBtn">Send</button>
+        </div>
+      </div>
+
+      <div class="toolbar-row">
+        <button class="ghost" id="restartBtn">Restart scenario</button>
+        <button class="speaker on" id="speakerBtn" type="button" title="Turn spoken replies off" aria-label="Turn spoken replies off">🔊 Spoken replies: On</button>
+        <span style="font-size:12px;color:var(--text-faint);" id="fillerBadge">Coach notes appear in teal after each exchange</span>
       </div>
     </div>
-    <div class="imo-card">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-        <span style="font-size:15px;font-weight:700;">The Market Alliance</span>
-        <span class="badge badge-progress">In the works</span>
+
+    <!-- SCRIPTS -->
+    <div class="view" id="view-scripts">
+      <div class="eyebrow">Reference</div>
+      <h1 class="page-title">Scripts &amp; talk tracks</h1>
+      <p class="page-sub">Pulled straight from your 30-day plan, for quick reference while you practice.</p>
+
+      <div class="script-card">
+        <span class="tag">Day 1 · New connection</span>
+        <h3>First message</h3>
+        <blockquote>Hi {{First Name}},
+
+Congratulations on your new business! I know how much work goes into building something from the ground up.
+
+I work with local business owners to help protect both their business and their personal income if an unexpected illness or injury prevents them from working. Many owners don't realize that even a temporary disability can create major financial stress for both the business and their family.
+
+I'd love to learn more about your business and see if there are any simple, affordable ways to help protect what you're building. There's absolutely no obligation—just a short conversation to see if it makes sense.
+
+Would you have 15 minutes sometime this week or next for a quick call?</blockquote>
       </div>
-      <p style="font-size:13px;color:var(--text2);">Potential IMO relationship in progress.</p>
-    </div>
-    <p class="section-title" style="margin-top:1.5rem;">Direct Appointments</p>
-    <div class="imo-card">
-      <table class="ct">
-        <tr style="font-size:11px;color:var(--text2);"><td>Carrier</td><td>Type</td><td>Status</td></tr>
-        <tr><td style="font-weight:600;">Guardian Life</td><td>Direct contract</td><td><span class="badge badge-active">Active</span></td></tr>
-        <tr><td style="font-weight:600;">UnitedHealth</td><td>Direct contract</td><td><span class="badge badge-active">Active</span></td></tr>
-        <tr><td style="font-weight:600;">Delta Dental</td><td>Direct contract</td><td><span class="badge badge-progress">In the works</span></td></tr>
-      </table>
-    </div>
-    <div class="info-block" style="margin-top:1rem;">
-      <h3><i class="ti ti-star"></i> Guardian writing code — important</h3>
-      <div class="alert-box"><i class="ti ti-alert-circle"></i> Use writing code <strong>000ZU481</strong> on ALL Guardian applications. Broker: Consolidated Planning Holdings, Inc.</div>
-      <table class="ct">
-        <tr><td>AM Best rating</td><td>A++ Superior (highest possible)</td></tr>
-        <tr><td>Founded</td><td>1860 — dividends paid since 1868</td></tr>
-      </table>
-    </div>
-  </div>
 
-  <!-- ═══════════════ ALL PRODUCTS ═══════════════ -->
-  <div id="sec-products2" class="section">
-    <p class="section-title">All Products by Type</p>
-    <div class="pt-grid" id="products-grid"></div>
-  </div>
-
-  <!-- hidden products tab alias -->
-  <div id="sec-products" class="section" style="display:none;"></div>
-
-</div><!-- /shell -->
-
-<!-- ══════════ CARRIER MODAL ══════════ -->
-<div class="overlay" id="carrier-modal">
-  <div class="modal">
-    <div class="modal-title" id="carrier-modal-title"><i class="ti ti-building-bank"></i> Add carrier</div>
-    <div class="form-grid">
-      <div><label class="form-label">Carrier name *</label><input class="form-input" id="fc-name" placeholder="e.g. Mutual of Omaha" /></div>
-      <div><label class="form-label">Subtitle</label><input class="form-input" id="fc-sub" placeholder="e.g. ACA marketplace" /></div>
-    </div>
-    <div class="form-grid">
-      <div><label class="form-label">Status *</label>
-        <select class="form-select" id="fc-status">
-          <option value="active">Active — writing</option>
-          <option value="pending">Pending clearance</option>
-        </select>
+      <div class="script-card">
+        <span class="tag">Day 3 · Follow-up</span>
+        <h3>Key question</h3>
+        <p>"If you were unable to work for six months, would your business continue to pay its bills?" Offer a complimentary Business Protection Review, no pressure.</p>
       </div>
-      <div><label class="form-label">Writing # / code</label><input class="form-input" id="fc-code" placeholder="e.g. 1KTPQ" /></div>
-    </div>
-    <div class="form-grid">
-      <div><label class="form-label">Phone</label><input class="form-input" id="fc-phone" placeholder="800-000-0000" /></div>
-      <div><label class="form-label">Age range</label><input class="form-input" id="fc-age" placeholder="e.g. 18–85" /></div>
-    </div>
-    <div class="form-row">
-      <label class="form-label">Face amount range</label>
-      <input class="form-input" id="fc-face" placeholder="e.g. $2,000–$2,000,000" />
-    </div>
-    <div class="form-row">
-      <label class="form-label">Licensed states</label>
-      <div class="checkbox-group">
-        <label class="checkbox-label"><input type="checkbox" id="fc-va" /> Virginia (VA)</label>
-        <label class="checkbox-label"><input type="checkbox" id="fc-sc" /> South Carolina (SC)</label>
+
+      <div class="script-card">
+        <span class="tag">Discovery</span>
+        <h3>Questions to ask</h3>
+        <ul>
+          <li>Tell me about your business / how long have you been running it.</li>
+          <li>Who handles things if you're away?</li>
+          <li>What would happen if you couldn't work for 3–6 months? What expenses continue?</li>
+          <li>Do you have any disability or overhead expense coverage today?</li>
+          <li>What are your biggest financial concerns if you're unable to work?</li>
+        </ul>
+        <p style="color:var(--text-muted);font-style:italic;">Spend most of the meeting listening — their answers reveal the opportunity.</p>
+      </div>
+
+      <div class="script-card">
+        <span class="tag">Closing</span>
+        <h3>Transition &amp; close</h3>
+        <blockquote>"Based on what you've shared, I'd like to show you a few options that may help protect both your personal income and your business if the unexpected happens."
+
+"If we can put a plan in place that fits your budget and addresses the concerns you mentioned, would you be comfortable moving forward today?"</blockquote>
+        <p>If they hesitate: "What questions or concerns would you like to address before making a decision?"</p>
+      </div>
+
+      <div class="script-card">
+        <span class="tag">Referral</span>
+        <h3>Ask, even if they don't buy</h3>
+        <p>"I appreciate your time today. I enjoy helping local business owners prepare for the unexpected. Is there another business owner you know who might benefit from the same complimentary review?"</p>
       </div>
     </div>
-    <div class="form-row">
-      <label class="form-label">Product types <span style="font-weight:400;text-transform:none;">(comma separated)</span></label>
-      <input class="form-input" id="fc-tags" placeholder="e.g. final expense, term, whole life" />
-    </div>
-    <div class="form-row">
-      <label class="form-label">Notes</label>
-      <textarea class="form-textarea" id="fc-note" placeholder="Key notes about this carrier…"></textarea>
-    </div>
-    <div class="modal-footer">
-      <div class="modal-footer-left">
-        <button class="btn btn-danger" id="fc-delete-btn" onclick="deleteCarrier()" style="display:none;"><i class="ti ti-trash"></i> Delete</button>
+
+    <!-- TRACKER -->
+    <div class="view" id="view-tracker">
+      <div class="eyebrow">Today</div>
+      <h1 class="page-title">Daily activity tracker</h1>
+      <p class="page-sub">Log today's outreach against your daily goals. Saved automatically.</p>
+
+      <div class="tracker-grid" id="trackerGrid"></div>
+
+      <div class="shield-wrap">
+        <svg class="shield-svg" width="72" height="80" viewBox="0 0 72 80">
+          <path id="shieldOutline" d="M36 4 L66 16 V38 C66 58 52 70 36 76 C20 70 6 58 6 38 V16 Z" fill="none" stroke="#263A56" stroke-width="2"/>
+          <path id="shieldFill" d="M36 4 L66 16 V38 C66 58 52 70 36 76 C20 70 6 58 6 38 V16 Z" fill="#E8A33D" opacity="0.18"/>
+          <text x="36" y="46" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="20" fill="#E8A33D" id="shieldNum">0/2</text>
+        </svg>
+        <div class="shield-copy">
+          <h3>Appointments booked today</h3>
+          <p>Your weekly target is 2–4 policies sold from 8–10 discovery calls. Booking 1–2 appointments a day keeps you on pace.</p>
+        </div>
       </div>
-      <button class="btn" onclick="closeModal('carrier-modal')">Cancel</button>
-      <button class="btn btn-success" onclick="saveCarrier()"><i class="ti ti-check"></i> Save carrier</button>
+
+      <div class="reset-row">
+        <button class="ghost" id="resetDayBtn">Reset today's counts</button>
+      </div>
     </div>
+
   </div>
 </div>
-
-<!-- ══════════ LOGIN MODAL ══════════ -->
-<div class="overlay" id="login-modal">
-  <div class="modal">
-    <div class="modal-title"><i class="ti ti-lock"></i> <span id="login-modal-title">Add portal login</span></div>
-    <div class="form-row"><label class="form-label">Carrier name *</label><input class="form-input" id="fl-carrier" placeholder="e.g. UHC / Golden Rule" /></div>
-    <div class="form-row"><label class="form-label">Portal / website</label><input class="form-input" id="fl-portal" placeholder="e.g. https://agent.uhc.com" /></div>
-    <div class="form-row"><label class="form-label">Username *</label><input class="form-input" id="fl-user" placeholder="Your username" /></div>
-    <div class="form-row"><label class="form-label">Password</label><input class="form-input" id="fl-pass" type="text" placeholder="Your password" /></div>
-    <div class="form-row"><label class="form-label">Notes</label><input class="form-input" id="fl-note" placeholder="e.g. also used for commission statements" /></div>
-    <div class="modal-footer">
-      <div class="modal-footer-left">
-        <button class="btn btn-danger" id="fl-delete-btn" onclick="deleteLogin()" style="display:none;"><i class="ti ti-trash"></i> Delete</button>
-      </div>
-      <button class="btn" onclick="closeModal('login-modal')">Cancel</button>
-      <button class="btn btn-success" onclick="saveLogin()"><i class="ti ti-check"></i> Save login</button>
-    </div>
-  </div>
-</div>
-
-<!-- ══════════ REMINDER MODAL ══════════ -->
-<div class="overlay" id="reminder-modal">
-  <div class="modal">
-    <div class="modal-title"><i class="ti ti-bell"></i> <span id="reminder-modal-title">Add reminder</span></div>
-    <div class="form-row"><label class="form-label">Carrier (optional)</label><input class="form-input" id="fr-carrier" placeholder="e.g. Ambetter of SC" /></div>
-    <div class="form-row"><label class="form-label">Reminder / task *</label><textarea class="form-textarea" id="fr-body" placeholder="e.g. Follow up on writing # for Ambetter SC" style="min-height:80px;"></textarea></div>
-    <div class="form-row"><label class="form-label">Due date (optional)</label><input class="form-input" id="fr-date" type="date" /></div>
-    <div class="modal-footer">
-      <div class="modal-footer-left">
-        <button class="btn btn-danger" id="fr-delete-btn" onclick="deleteReminder()" style="display:none;"><i class="ti ti-trash"></i> Delete</button>
-      </div>
-      <button class="btn" onclick="closeModal('reminder-modal')">Cancel</button>
-      <button class="btn btn-success" onclick="saveReminder()"><i class="ti ti-check"></i> Save reminder</button>
-    </div>
-  </div>
-</div>
-
-<!-- TOAST -->
-<div class="toast" id="toast"></div>
 
 <script>
-// ══════════════════════════════════════════
-//  DEFAULT DATA
-// ══════════════════════════════════════════
-const DEFAULT_CARRIERS = [
-  {id:1,name:"Corebridge (AIG)",sub:"GIWL & SIWL",status:"active",code:"1KTPQ",phone:"877-399-7747",states:["VA","SC"],ageRange:"18–85",faceRange:"$2,000–$2,000,000",tags:["final expense","term","annuity","GUL","IUL"],note:"SimpliNow Legacy. Best for FE + term + annuity."},
-  {id:2,name:"Mutual of Omaha",sub:"",status:"active",code:"Lic #15705450",phone:"800-775-7896",states:["VA","SC"],ageRange:"18–85",faceRange:"$2,000–$10,000,000",tags:["final expense","term","GUL","IUL","annuity"],note:"Living Promise best for FE. Term Express no-exam SI."},
-  {id:3,name:"Americo",sub:"",status:"active",code:"FFHB2P",phone:"800-231-0801",states:["VA","SC"],ageRange:"18–85",faceRange:"$5,000–$450,000",tags:["final expense","IUL","whole life"],note:"Eagle Select for FE ages 40–85. Living benefits on all products."},
-  {id:4,name:"American Amicable",sub:"",status:"active",code:"Lic #11802998",phone:"800-736-7311",states:["VA","SC"],ageRange:"18–85",faceRange:"$2,000–$500,000",tags:["final expense","term","whole life"],note:"Senior Choice for FE 50–85. Patriot fully underwritten."},
-  {id:5,name:"Ethos",sub:"Digital-first",status:"active",code:"f0ab5888-384-6754",phone:"N/A — digital",states:["VA","SC"],ageRange:"20–85",faceRange:"$1,000–$1,500,000",tags:["term","senior whole life","final expense"],note:"Often no exam ages 20–60. Senior WL 66–85."},
-  {id:6,name:"Guardian Life",sub:"Via Consolidated Planning Holdings",status:"active",code:"000ZU481",phone:"800-441-6455",states:["VA","SC"],ageRange:"18–85",faceRange:"$1,000–$10,000,000",tags:["term","whole life","GUL","IUL","annuity","disability income"],note:"A++ AM Best. USE code 000ZU481 on ALL Guardian apps."},
-  {id:7,name:"Ambetter of SC",sub:"ACA marketplace",status:"active",code:"Update needed",phone:"Healthcare.gov",states:["SC"],ageRange:"0+",faceRange:"N/A",tags:["health","ACA"],note:"SC ONLY. Writing # still needed."},
-  {id:8,name:"UHC / Golden Rule",sub:"SC appt. eff. Mar 3, 2026",status:"active",code:"AA4265704",phone:"UHC portal",states:["SC"],ageRange:"0+",faceRange:"N/A",tags:["health","ACA","short-term"],note:"SC ONLY. NPN: 16328613."},
-  {id:9,name:"CVS / Aetna",sub:"",status:"pending",code:"GNW651198",phone:"866-272-6630",states:["VA","SC"],ageRange:"18–79",faceRange:"$25,000–$5,000,000",tags:["term","whole life"],note:"Approved but NOT YET WRITING. Awaiting clearance."},
-  {id:10,name:"Foresters Financial",sub:"",status:"pending",code:"Pending",phone:"866-466-7166",states:["VA","SC"],ageRange:"18–80",faceRange:"$10,000–$1,000,000",tags:["term","whole life"],note:"Approved but NOT YET WRITING. Awaiting clearance."}
-];
+/* ---------------- NAV ---------------- */
+document.querySelectorAll('.navitem').forEach(item=>{
+  item.addEventListener('click',()=>{
+    document.querySelectorAll('.navitem').forEach(i=>i.classList.remove('active'));
+    document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+    item.classList.add('active');
+    document.getElementById('view-'+item.dataset.view).classList.add('active');
+  });
+});
 
-const DEFAULT_LOGINS = [
-  {id:1,carrier:"UHC / Golden Rule",portal:"UHC agent portal",username:"marcushayes5",password:"Morner56!Morner56",note:"SC health & ACA appointments"}
-];
-
-const DEFAULT_REMINDERS = [
-  {id:1,carrier:"Ambetter of SC",body:"Locate and add writing # / Agent ID",date:"",done:false},
-  {id:2,carrier:"CVS / Aetna",body:"Follow up on writing clearance — approved but not yet writing",date:"",done:false},
-  {id:3,carrier:"Foresters Financial",body:"Follow up on writing clearance — approved but not yet writing",date:"",done:false}
-];
-
-const PRODUCTS = {
-  "Final Expense":[
-    {name:"SimpliNow Legacy WL (Graded)",carrier:"Corebridge (AIG)",note:"50–80, $2K–$25K. Graded benefit yrs 1–2."},
-    {name:"SimpliNow Legacy MAX (Level)",carrier:"Corebridge (AIG)",note:"50–80, $2K–$25K. Level benefit day 1."},
-    {name:"GIWL — Guaranteed Issue WL",carrier:"Corebridge (AIG)",note:"45–85, $5K–$25K. No health questions."},
-    {name:"Living Promise Level WL",carrier:"Mutual of Omaha",note:"45–85, $2K–$40K. Best-in-class FE."},
-    {name:"Living Promise Graded WL",carrier:"Mutual of Omaha",note:"45–80, $2K–$40K. Graded yrs 1–2."},
-    {name:"Eagle Select FE WL",carrier:"Americo",note:"40–85, $5K–$50K. Non-medical SI."},
-    {name:"Senior Choice FE WL",carrier:"American Amicable",note:"50–85, $2K–$50K. No exam."},
-    {name:"Senior Whole Life",carrier:"Ethos",note:"66–85, $1K–$30K. Digital SI WL."}
-  ],
-  "Term Life":[
-    {name:"Select-a-Term",carrier:"Corebridge (AIG)",note:"18–75, $100K–$2M. Fully UW. 10–30 yr."},
-    {name:"Term Life Express (SI)",carrier:"Mutual of Omaha",note:"18–70, $25K–$300K. No exam, same-day."},
-    {name:"Term Life Answers (Full UW)",carrier:"Mutual of Omaha",note:"18–80, $100K–$10M. Full UW."},
-    {name:"Pioneer Plus Simplified Term",carrier:"American Amicable",note:"18–70, $10K–$300K. No exam."},
-    {name:"Patriot Term (Full UW)",carrier:"American Amicable",note:"18–70, $50K–$500K."},
-    {name:"Term Life (10/15/20/30 yr)",carrier:"Ethos",note:"20–65, $20K–$1.5M. Digital-first."},
-    {name:"Guardian Level Term",carrier:"Guardian Life",note:"18–75, $100K–$10M."}
-  ],
-  "Whole Life / Perm":[
-    {name:"Simplified Issue WL (SIWL)",carrier:"Corebridge (AIG)",note:"18–80, $5K–$100K."},
-    {name:"GUL (Guaranteed UL)",carrier:"Mutual of Omaha",note:"18–85, $100K–$5M. No-lapse."},
-    {name:"UltimateLife WL",carrier:"Americo",note:"18–70, $10K–$100K. Living benefits."},
-    {name:"Home Service WL",carrier:"American Amicable",note:"0–85, $5K–$100K."},
-    {name:"Dividend Paying WL",carrier:"Guardian Life",note:"0–80, $25K–$5M. A++ — since 1868."},
-    {name:"Survivorship WL",carrier:"Guardian Life",note:"18–80, $100K–$5M. Estate planning."}
-  ],
-  "IUL / Universal Life":[
-    {name:"Income Edge IUL",carrier:"Mutual of Omaha",note:"0–80, $50K–$5M. Retirement income."},
-    {name:"Founders Plus IUL",carrier:"Americo",note:"18–70, $50K–$450K. Living benefits."},
-    {name:"Guardian Indexed UL",carrier:"Guardian Life",note:"18–80, $50K–$5M."},
-    {name:"Guardian GUL",carrier:"Guardian Life",note:"18–85, $100K–$5M. Guaranteed premiums."}
-  ],
-  "Annuity":[
-    {name:"Power 7 Fixed Annuity",carrier:"Corebridge (AIG)",note:"$10K–$1M. 7-yr surrender."},
-    {name:"Power Index 10 FIA",carrier:"Corebridge (AIG)",note:"$10K–$1M. Fixed indexed."},
-    {name:"Income Access SPIA",carrier:"Mutual of Omaha",note:"$10K–$2M. Immediate income."},
-    {name:"Ultra Advantage FIA",carrier:"Mutual of Omaha",note:"$10K–$2M. 3–10 yr terms."},
-    {name:"Ultra-Premier MYGA",carrier:"Mutual of Omaha",note:"$10K–$2M. 5 or 7 yr."},
-    {name:"Guardian Fixed Annuity",carrier:"Guardian Life",note:"$10K–$2M. A++ backed."},
-    {name:"Guardian Income Annuity",carrier:"Guardian Life",note:"$10K–$2M. A++ SPIA."}
-  ],
-  "Health / ACA":[
-    {name:"ACA Marketplace Plans",carrier:"Ambetter of SC",note:"SC ONLY."},
-    {name:"Individual Health / Short-Term",carrier:"UHC / Golden Rule",note:"SC ONLY. Eff. March 3, 2026."}
-  ],
-  "Disability Income":[
-    {name:"Guardian DI (Individual)",carrier:"Guardian Life",note:"18–60, $1K–$30K/mo. Best-in-class DI."}
-  ]
+/* ---------------- PRACTICE / ROLEPLAY ---------------- */
+const scenarios = {
+  edInterview: {
+    label: "Interview — Executive Director role",
+    context: "The rep is interviewing for an Executive Director position at a charitable organization (or is a sitting ED being interviewed by a new board chair / major funder about their leadership). The interviewer asks about vision, handling a struggling program, or leading through a budget shortfall. The rep needs to answer with precise, confident language — no rambling, no hedging filler — and demonstrate strategic thinking, not just good intentions."
+  },
+  edStaffIssue: {
+    label: "Staff meeting — Raising a performance or budget issue",
+    context: "The rep is the Executive Director addressing their staff (program directors, coordinators) about a real problem — underperformance on a grant deliverable, a budget shortfall, or a program that needs to change. The 'prospect' persona plays a staff member who is defensive, worried about their job, or pushes back on the framing. The rep needs to name the issue directly and kindly, without softening it into vagueness or over-apologizing."
+  },
+  edBoardIssue: {
+    label: "Board meeting — Raising a difficult issue with your board",
+    context: "The rep is the Executive Director bringing a hard issue to their Board of Directors — a funding gap, a compliance concern, or a recommendation the board may resist (e.g. cutting a beloved but underperforming program). The 'prospect' persona plays a skeptical or protective board member who challenges the recommendation. The rep needs command of the room: clear framing, a specific ask, and composure if challenged or interrupted."
+  },
+  edFunderConvo: {
+    label: "Funder meeting — Delivering hard news or making the ask",
+    context: "The rep is the Executive Director in a meeting with a major funder or foundation program officer — either delivering news the funder won't love (a missed target, a pivot in strategy) or making a direct ask for renewed or increased support. The 'prospect' persona plays the funder, evaluating whether this ED is credible and worth continued investment. Word choice and precision matter as much as the news itself."
+  },
+  royalSweetsPitch: {
+    label: "Pitch — Royal Sweets Boutique app",
+    context: "The rep is pitching a new concept ordering app they designed for Royal Sweets Boutique, a food truck selling cheesecakes, cakes, and milkshakes, to the truck's owner (the 'prospect' persona). This is a concept-preview stage — no live menu items or payment integration yet, and the visual/color system was carried over from another ordering app the rep already built for a BBQ food-truck client. The rep needs to sell the owner on the idea: what problem the app solves for the truck (faster lines, fewer missed orders, an easier way for regulars to reorder), why the design decisions make sense, and what's still ahead before it's launch-ready — without overselling something that isn't finished yet. The prospect should ask realistic questions about cost, timeline, how customers actually place and pay for orders, and how this is different from just using a QR code or Square."
+  },
+  day1: {
+    label: "Day 1 — First connection message",
+    context: "The rep just sent a first connection message on Alignable to a business owner they've never spoken to. The rep's opener praises the new business and offers a no-obligation 15-minute call about protecting business and personal income from disability."
+  },
+  day3: {
+    label: "Day 3 — Follow-up",
+    context: "The rep is following up because the Day 1 message never got a reply. The rep asks whether the business could keep paying its bills if the owner couldn't work for six months, and offers a complimentary Business Protection Review."
+  },
+  day5: {
+    label: "Day 5 — Value / education message",
+    context: "The rep sends a value-first message pointing out that most owners insure their building, equipment and vehicles but overlook insuring themselves — the asset that actually generates the income."
+  },
+  week2q: {
+    label: "Week 2 — Engagement question",
+    context: "The rep posts/sends a light engagement question: 'If you couldn't work for six months, what would be the biggest challenge for your business — payroll, rent, loan payments, or keeping customers?'"
+  },
+  discovery: {
+    label: "Appointment — Discovery call",
+    context: "The rep is now in a booked 15-20 minute discovery call. The rep should ask open discovery questions (how long in business, who covers for them if away, what expenses would continue if they couldn't work, any current coverage) and mostly listen."
+  },
+  objection: {
+    label: "Appointment — Handling an objection at close",
+    context: "The rep has presented options and is trying to close: 'If we can put a plan in place that fits your budget and addresses the concerns you mentioned, would you be comfortable moving forward today?' The prospect should raise a realistic objection (price, need to think, spouse/partner, timing, already covered, etc.) for the rep to handle."
+  },
+  referral: {
+    label: "After the meeting — Asking for a referral",
+    context: "The meeting just ended, positively but without a signed policy yet. The rep is asking whether the owner knows another local business owner who might benefit from the same complimentary review."
+  },
+  expertintro: {
+    label: "Networking — Introducing yourself as an expert",
+    context: "The rep is meeting a business owner for the first time at a networking event or chamber-of-commerce mixer. In a few confident sentences, the rep needs to introduce who they are and what they do — someone who helps business owners protect their income and their business if they're ever unable to work — without sounding rehearsed, rambly, or over-explained. The prospect is a stranger sizing the rep up in real time."
+  },
+  groupfloor: {
+    label: "Group conversation — Making your point land",
+    context: "The rep is one of four or five people in a group conversation (a networking roundtable, team meeting, or mastermind group). The rep has something worth saying but tends to lose the floor — people talk over them or the conversation moves on before the point lands. The 'prospect' persona plays the most dominant other voice in the room, reacting to how the rep delivers their point: do they pause, drop pitch at the end, or hold eye-contact energy in their wording versus rushing and trailing off. Simulate the group's attention shifting based on delivery, not just content."
+  },
+  groupinterrupt: {
+    label: "Group conversation — Recovering after being cut off",
+    context: "The rep is mid-sentence in a group setting when the 'prospect' persona (playing another participant) interrupts and talks over them. The rep needs to practice reclaiming the floor calmly, without raising their voice or apologizing excessively, and without losing their train of thought. The persona should realistically interrupt at least once early in the exchange."
+  },
+  interviewpitch: {
+    label: "Interview — 'Tell me about yourself'",
+    context: "The rep is in a job or professional interview. The interviewer (the 'prospect' persona) opens with 'Tell me about yourself' or a similar broad opener. The rep needs to answer confidently, concisely, and with precise word choice, without rambling, trailing off, or leaning on filler words."
+  },
+  interviewpressure: {
+    label: "Interview — Answering under pressure",
+    context: "The rep is in an interview and the interviewer (the 'prospect' persona) asks a pointed, slightly challenging follow-up question that puts the rep on the spot. The rep needs to answer with composure, clear structure, and expanded vocabulary rather than vague filler, while the interviewer's tone reflects the selected temperament."
+  }
 };
 
-// ══════════════════════════════════════════
-//  STATE & STORAGE
-// ══════════════════════════════════════════
-let carriers=[], logins=[], reminders=[];
-let currentFilter='all', editingCarrierId=null, editingLoginId=null, editingReminderId=null;
-let pwVisible={};
+let convo = []; // {role:'rep'|'prospect', text}
+let rapport = 50;
+let busy = false;
 
-function load(){
-  try { carriers  = JSON.parse(localStorage.getItem('mh_carriers'))  || clone(DEFAULT_CARRIERS); } catch(e){ carriers=clone(DEFAULT_CARRIERS); }
-  try { logins    = JSON.parse(localStorage.getItem('mh_logins'))    || clone(DEFAULT_LOGINS); }   catch(e){ logins=clone(DEFAULT_LOGINS); }
-  try { reminders = JSON.parse(localStorage.getItem('mh_reminders')) || clone(DEFAULT_REMINDERS); }catch(e){ reminders=clone(DEFAULT_REMINDERS); }
-}
-function save(){
-  localStorage.setItem('mh_carriers',  JSON.stringify(carriers));
-  localStorage.setItem('mh_logins',    JSON.stringify(logins));
-  localStorage.setItem('mh_reminders', JSON.stringify(reminders));
-}
-function clone(x){ return JSON.parse(JSON.stringify(x)); }
-function nextId(arr){ return arr.length ? Math.max(...arr.map(x=>x.id))+1 : 1; }
-function esc(s){ return s?String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'):''; }
+const chatlog = document.getElementById('chatlog');
+const emptyState = document.getElementById('emptyState');
+const scenarioSelect = document.getElementById('scenarioSelect');
+const tempSelect = document.getElementById('tempSelect');
+const composerInput = document.getElementById('composerInput');
+const sendBtn = document.getElementById('sendBtn');
+const micBtn = document.getElementById('micBtn');
+const speakerBtn = document.getElementById('speakerBtn');
+const rapportFill = document.getElementById('rapportFill');
+const rapportVal = document.getElementById('rapportVal');
 
-// ══════════════════════════════════════════
-//  CARRIERS
-// ══════════════════════════════════════════
-function renderCarriers(){
-  const q=(document.getElementById('carrier-search').value||'').toLowerCase();
-  let list=[...carriers];
-  if(currentFilter==='active')  list=list.filter(c=>c.status==='active');
-  else if(currentFilter==='pending') list=list.filter(c=>c.status==='pending');
-  else if(currentFilter==='fe') list=list.filter(c=>(c.tags||[]).includes('final expense'));
-  else if(currentFilter==='health') list=list.filter(c=>(c.tags||[]).includes('health'));
-  if(q) list=list.filter(c=>
-    c.name.toLowerCase().includes(q)||(c.note||'').toLowerCase().includes(q)||
-    (c.tags||[]).some(t=>t.toLowerCase().includes(q))||(c.code||'').toLowerCase().includes(q)
-  );
-  const grid=document.getElementById('carrier-grid');
-  if(!list.length){grid.innerHTML='<p style="color:var(--text2);padding:1rem 0;font-size:14px;">No carriers match your search.</p>';return;}
-  grid.innerHTML=list.map(c=>`
-    <div class="carrier-card ${c.status}-card">
-      <div class="card-header">
-        <div>
-          <div class="carrier-name">${esc(c.name)}</div>
-          ${c.sub?`<div class="carrier-sub">${esc(c.sub)}</div>`:''}
-        </div>
-        <div style="display:flex;align-items:center;gap:6px;">
-          <span class="badge ${c.status==='active'?'badge-active':'badge-pending'}">${c.status==='active'?'Active':'Pending'}</span>
-          <button class="btn btn-sm btn-icon" onclick="openCarrierModal(${c.id})" title="Edit carrier"><i class="ti ti-pencil"></i></button>
-        </div>
-      </div>
-      <div class="card-row"><span class="row-label"><i class="ti ti-hash"></i> Writing #</span><span class="row-val mono">${esc(c.code)}</span></div>
-      <div class="card-row"><span class="row-label"><i class="ti ti-phone"></i> Phone</span><span class="row-val">${esc(c.phone)}</span></div>
-      <div class="card-row"><span class="row-label"><i class="ti ti-users"></i> Ages</span><span class="row-val">${esc(c.ageRange)}</span></div>
-      <div class="card-row"><span class="row-label"><i class="ti ti-map-pin"></i> States</span><span class="row-val">${(c.states||[]).map(s=>`<span class="state-pill ${s==='VA'?'state-va':'state-sc'}" style="margin-left:3px;">${s}</span>`).join('')}</span></div>
-      <div class="card-row"><span class="row-label"><i class="ti ti-currency-dollar"></i> Face range</span><span class="row-val">${esc(c.faceRange)}</span></div>
-      <div style="margin-top:10px;"><div style="font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px;">Products</div>
-      <div class="product-tags">${(c.tags||[]).map(t=>`<span class="ptag">${esc(t)}</span>`).join('')}</div></div>
-      ${c.note?`<div class="card-note">${esc(c.note)}</div>`:''}
-    </div>
-  `).join('');
-  updateMetrics();
-  renderQuickDial();
+function setRapport(v){
+  rapport = Math.max(0, Math.min(100, v));
+  rapportFill.style.width = rapport + '%';
+  rapportVal.textContent = rapport;
 }
+setRapport(50);
 
-function updateMetrics(){
-  const active=carriers.filter(c=>c.status==='active').length;
-  const pending=carriers.filter(c=>c.status==='pending').length;
-  document.getElementById('m-total').textContent=carriers.length;
-  document.getElementById('m-active').textContent=active;
-  document.getElementById('m-pending').textContent=pending;
-  document.getElementById('hdr-active').innerHTML=`<i class="ti ti-check"></i> ${active} active`;
-  document.getElementById('hdr-pending').innerHTML=`<i class="ti ti-clock"></i> ${pending} pending`;
-}
+// ---------------- SPOKEN PROSPECT REPLIES ----------------
+const speechSupported = 'speechSynthesis' in window && 'SpeechSynthesisUtterance' in window;
+let spokenRepliesEnabled = speechSupported;
 
-function setFilter(btn,f){
-  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('on'));
-  btn.classList.add('on'); currentFilter=f; renderCarriers();
-}
-
-function openCarrierModal(id){
-  editingCarrierId=id||null;
-  const isEdit=!!id;
-  document.getElementById('carrier-modal-title').innerHTML=`<i class="ti ti-building-bank"></i> ${isEdit?'Edit carrier':'Add new carrier'}`;
-  document.getElementById('fc-delete-btn').style.display=isEdit?'inline-flex':'none';
-  if(isEdit){
-    const c=carriers.find(x=>x.id===id);
-    if(!c) return;
-    document.getElementById('fc-name').value=c.name||'';
-    document.getElementById('fc-sub').value=c.sub||'';
-    document.getElementById('fc-status').value=c.status||'active';
-    document.getElementById('fc-code').value=c.code||'';
-    document.getElementById('fc-phone').value=c.phone||'';
-    document.getElementById('fc-age').value=c.ageRange||'';
-    document.getElementById('fc-face').value=c.faceRange||'';
-    document.getElementById('fc-va').checked=(c.states||[]).includes('VA');
-    document.getElementById('fc-sc').checked=(c.states||[]).includes('SC');
-    document.getElementById('fc-tags').value=(c.tags||[]).join(', ');
-    document.getElementById('fc-note').value=c.note||'';
-  } else {
-    ['fc-name','fc-sub','fc-code','fc-phone','fc-age','fc-face','fc-tags','fc-note'].forEach(i=>document.getElementById(i).value='');
-    document.getElementById('fc-status').value='active';
-    document.getElementById('fc-va').checked=false; document.getElementById('fc-sc').checked=false;
+function updateSpeakerButton(){
+  if (!speechSupported) {
+    speakerBtn.disabled = true;
+    speakerBtn.classList.remove('on');
+    speakerBtn.textContent = '🔇 Spoken replies unavailable';
+    speakerBtn.title = 'Speech output is not supported in this browser';
+    speakerBtn.setAttribute('aria-label', speakerBtn.title);
+    return;
   }
-  openModal('carrier-modal');
+
+  speakerBtn.classList.toggle('on', spokenRepliesEnabled);
+  speakerBtn.textContent = spokenRepliesEnabled ? '🔊 Spoken replies: On' : '🔇 Spoken replies: Off';
+  speakerBtn.title = spokenRepliesEnabled ? 'Turn spoken replies off' : 'Turn spoken replies on';
+  speakerBtn.setAttribute('aria-label', speakerBtn.title);
 }
 
-function saveCarrier(){
-  const name=document.getElementById('fc-name').value.trim();
-  if(!name){showToast('Carrier name is required'); return;}
-  const states=[]; if(document.getElementById('fc-va').checked) states.push('VA'); if(document.getElementById('fc-sc').checked) states.push('SC');
-  const tags=document.getElementById('fc-tags').value.split(',').map(t=>t.trim()).filter(Boolean);
-  const data={name,sub:document.getElementById('fc-sub').value.trim(),status:document.getElementById('fc-status').value,
-    code:document.getElementById('fc-code').value.trim(),phone:document.getElementById('fc-phone').value.trim(),
-    ageRange:document.getElementById('fc-age').value.trim(),faceRange:document.getElementById('fc-face').value.trim(),states,tags,
-    note:document.getElementById('fc-note').value.trim()};
-  if(editingCarrierId){
-    const i=carriers.findIndex(c=>c.id===editingCarrierId);
-    if(i>-1) carriers[i]={...carriers[i],...data};
-    showToast(`${name} updated ✓`);
-  } else {
-    carriers.push({id:nextId(carriers),...data});
-    showToast(`${name} added ✓`);
+function speakProspectReply(text){
+  if (!speechSupported || !spokenRepliesEnabled || !text) return;
+
+  window.speechSynthesis.cancel();
+
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = 'en-US';
+  utterance.rate = 1.0;
+  utterance.pitch = 1.0;
+  utterance.volume = 1.0;
+
+  const voices = window.speechSynthesis.getVoices();
+  const preferred = voices.find(v => v.lang && v.lang.toLowerCase().startsWith('en-us')) ||
+                    voices.find(v => v.lang && v.lang.toLowerCase().startsWith('en')) ||
+                    voices[0];
+
+  if (preferred) utterance.voice = preferred;
+  window.speechSynthesis.speak(utterance);
+}
+
+speakerBtn.addEventListener('click', ()=>{
+  spokenRepliesEnabled = !spokenRepliesEnabled;
+  if (!spokenRepliesEnabled && speechSupported) {
+    window.speechSynthesis.cancel();
   }
-  save(); closeModal('carrier-modal'); renderCarriers();
+  updateSpeakerButton();
+});
+
+updateSpeakerButton();
+
+function addMsg(role, text){
+  const div = document.createElement('div');
+  div.className = 'msg ' + (role === 'rep' ? 'me' : role === 'prospect' ? 'prospect' : 'coach');
+  div.textContent = text;
+  chatlog.appendChild(div);
+  chatlog.scrollTop = chatlog.scrollHeight;
+  if (emptyState) { emptyState.remove(); }
 }
 
-function deleteCarrier(){
-  if(!editingCarrierId) return;
-  const c=carriers.find(x=>x.id===editingCarrierId);
-  if(!confirm(`Delete ${c.name}? This cannot be undone.`)) return;
-  carriers=carriers.filter(x=>x.id!==editingCarrierId);
-  save(); closeModal('carrier-modal'); renderCarriers(); showToast(`${c.name} deleted`);
+function addTyping(){
+  const div = document.createElement('div');
+  div.className = 'msg prospect';
+  div.id = 'typingIndicator';
+  div.innerHTML = '<span class="typing-dots"><span></span><span></span><span></span></span>';
+  chatlog.appendChild(div);
+  chatlog.scrollTop = chatlog.scrollHeight;
+}
+function removeTyping(){
+  const t = document.getElementById('typingIndicator');
+  if (t) t.remove();
 }
 
-function renderQuickDial(){
-  const rows=carriers.filter(c=>c.phone&&!['N/A — digital','Healthcare.gov','UHC portal'].includes(c.phone));
-  document.getElementById('quick-dial').innerHTML=
-    `<tr style="font-size:11px;color:var(--text2);"><td>Carrier</td><td>Phone</td><td>Writing #</td></tr>`+
-    rows.map(c=>`<tr><td style="font-weight:600;">${esc(c.name)}</td><td>${esc(c.phone)}</td><td><span class="mono">${esc(c.code)}</span></td></tr>`).join('');
+function resetScenario(){
+  if (speechSupported) window.speechSynthesis.cancel();
+  convo = [];
+  chatlog.innerHTML = '';
+  const div = document.createElement('div');
+  div.className = 'msg system-empty';
+  div.id = 'emptyState';
+  div.textContent = 'Send your opening line for "' + scenarios[scenarioSelect.value].label + '" to begin.';
+  chatlog.appendChild(div);
+  setRapport(50);
+}
+scenarioSelect.addEventListener('change', resetScenario);
+tempSelect.addEventListener('change', resetScenario);
+document.getElementById('restartBtn').addEventListener('click', resetScenario);
+
+const FILLER_WORDS = ['um','uh','uhh','umm','like','you know','kind of','sort of','basically','actually','i mean','literally','just','so yeah','right?'];
+
+function analyzeFillers(text){
+  const lower = ' ' + text.toLowerCase() + ' ';
+  const found = {};
+  let total = 0;
+  FILLER_WORDS.forEach(w=>{
+    const re = new RegExp('\\b' + w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\b', 'g');
+    const matches = lower.match(re);
+    if (matches && matches.length){
+      found[w] = matches.length;
+      total += matches.length;
+    }
+  });
+  return { total, found };
 }
 
-// ══════════════════════════════════════════
-//  LOGINS
-// ══════════════════════════════════════════
-function renderLogins(){
-  const el=document.getElementById('login-cards');
-  if(!logins.length){el.innerHTML='<p style="color:var(--text2);font-size:14px;">No logins saved yet. Click "Add login" to get started.</p>';return;}
-  el.innerHTML=logins.map((l,i)=>`
-    <div class="info-block" style="margin-bottom:10px;">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-        <div style="font-size:15px;font-weight:700;">${esc(l.carrier)}</div>
-        <button class="btn btn-sm" onclick="openLoginModal(${l.id})"><i class="ti ti-pencil"></i> Edit</button>
-      </div>
-      <table class="ct">
-        ${l.portal?`<tr><td>Portal</td><td>${esc(l.portal)}</td></tr>`:''}
-        <tr><td>Username</td><td><span class="mono">${esc(l.username)}</span></td></tr>
-        <tr><td>Password</td><td>
-          <span class="mono">${pwVisible[i]?esc(l.password):'••••••••••••'}</span>
-          <button class="pw-toggle" onclick="togglePw(${i})" title="Toggle password"><i class="ti ti-eye${pwVisible[i]?'-off':''}"></i></button>
-        </td></tr>
-        ${l.note?`<tr><td>Notes</td><td>${esc(l.note)}</td></tr>`:''}
-      </table>
-    </div>
-  `).join('');
+const fillerBadge = document.getElementById('fillerBadge');
+const defaultBadgeText = 'Coach notes appear in teal after each exchange';
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+let recognition = null;
+let isListening = false;
+let speechBaseText = '';
+
+function setMicState(listening){
+  isListening = listening;
+  micBtn.classList.toggle('listening', listening);
+  micBtn.textContent = listening ? '⏹️' : '🎙️';
+  micBtn.title = listening ? 'Stop listening' : 'Speak your response';
+  micBtn.setAttribute('aria-label', micBtn.title);
 }
 
-function togglePw(i){ pwVisible[i]=!pwVisible[i]; renderLogins(); }
+if (SpeechRecognition) {
+  recognition = new SpeechRecognition();
+  recognition.lang = 'en-US';
+  recognition.continuous = true;
+  recognition.interimResults = true;
 
-function openLoginModal(id){
-  editingLoginId=id||null;
-  const isEdit=!!id;
-  document.getElementById('login-modal-title').textContent=isEdit?'Edit portal login':'Add portal login';
-  document.getElementById('fl-delete-btn').style.display=isEdit?'inline-flex':'none';
-  if(isEdit){
-    const l=logins.find(x=>x.id===id); if(!l) return;
-    document.getElementById('fl-carrier').value=l.carrier||'';
-    document.getElementById('fl-portal').value=l.portal||'';
-    document.getElementById('fl-user').value=l.username||'';
-    document.getElementById('fl-pass').value=l.password||'';
-    document.getElementById('fl-note').value=l.note||'';
-  } else {
-    ['fl-carrier','fl-portal','fl-user','fl-pass','fl-note'].forEach(i=>document.getElementById(i).value='');
-  }
-  openModal('login-modal');
-}
-
-function saveLogin(){
-  const carrier=document.getElementById('fl-carrier').value.trim();
-  const username=document.getElementById('fl-user').value.trim();
-  if(!carrier||!username){showToast('Carrier and username required'); return;}
-  const data={carrier,portal:document.getElementById('fl-portal').value.trim(),username,
-    password:document.getElementById('fl-pass').value.trim(),note:document.getElementById('fl-note').value.trim()};
-  if(editingLoginId){
-    const i=logins.findIndex(x=>x.id===editingLoginId); if(i>-1) logins[i]={...logins[i],...data};
-    showToast(`${carrier} login updated ✓`);
-  } else {
-    logins.push({id:nextId(logins),...data}); showToast(`${carrier} login added ✓`);
-  }
-  save(); closeModal('login-modal'); renderLogins();
-}
-
-function deleteLogin(){
-  if(!editingLoginId) return;
-  const l=logins.find(x=>x.id===editingLoginId);
-  if(!confirm(`Delete login for ${l.carrier}?`)) return;
-  logins=logins.filter(x=>x.id!==editingLoginId);
-  save(); closeModal('login-modal'); renderLogins(); showToast('Login deleted');
-}
-
-// ══════════════════════════════════════════
-//  REMINDERS
-// ══════════════════════════════════════════
-function renderReminders(){
-  const el=document.getElementById('reminder-list');
-  const open=reminders.filter(r=>!r.done); const done=reminders.filter(r=>r.done);
-  const all=[...open,...done];
-  if(!all.length){el.innerHTML='<p style="color:var(--text2);font-size:14px;">No reminders yet. Click "Add reminder" to get started.</p>';return;}
-  el.innerHTML=all.map(r=>`
-    <div class="reminder-item ${r.done?'done':''}" id="ri-${r.id}">
-      <input type="checkbox" class="reminder-check" ${r.done?'checked':''} onchange="toggleReminder(${r.id})" title="Mark done" />
-      <div class="reminder-text">
-        ${r.carrier?`<div class="reminder-carrier"><i class="ti ti-building-bank" style="font-size:11px;"></i> ${esc(r.carrier)}</div>`:''}
-        <div class="reminder-body">${esc(r.body)}</div>
-        ${r.date?`<div class="reminder-date"><i class="ti ti-calendar" style="font-size:11px;"></i> Due: ${r.date}</div>`:''}
-      </div>
-      <button class="btn btn-sm btn-icon" onclick="openReminderModal(${r.id})" title="Edit"><i class="ti ti-pencil"></i></button>
-    </div>
-  `).join('');
-  // badge
-  const openCount=open.length;
-  const badge=document.getElementById('reminder-badge');
-  if(openCount>0){badge.style.display='inline';badge.textContent=openCount;}
-  else{badge.style.display='none';}
-}
-
-function toggleReminder(id){
-  const r=reminders.find(x=>x.id===id); if(r) r.done=!r.done;
-  save(); renderReminders();
-}
-
-function openReminderModal(id){
-  editingReminderId=id||null;
-  const isEdit=!!id;
-  document.getElementById('reminder-modal-title').textContent=isEdit?'Edit reminder':'Add reminder';
-  document.getElementById('fr-delete-btn').style.display=isEdit?'inline-flex':'none';
-  if(isEdit){
-    const r=reminders.find(x=>x.id===id); if(!r) return;
-    document.getElementById('fr-carrier').value=r.carrier||'';
-    document.getElementById('fr-body').value=r.body||'';
-    document.getElementById('fr-date').value=r.date||'';
-  } else {
-    ['fr-carrier','fr-body','fr-date'].forEach(i=>document.getElementById(i).value='');
-  }
-  openModal('reminder-modal');
-}
-
-function saveReminder(){
-  const body=document.getElementById('fr-body').value.trim();
-  if(!body){showToast('Reminder text is required'); return;}
-  const data={carrier:document.getElementById('fr-carrier').value.trim(),body,date:document.getElementById('fr-date').value,done:false};
-  if(editingReminderId){
-    const i=reminders.findIndex(x=>x.id===editingReminderId);
-    if(i>-1) reminders[i]={...reminders[i],...data};
-    showToast('Reminder updated ✓');
-  } else {
-    reminders.push({id:nextId(reminders),...data}); showToast('Reminder added ✓');
-  }
-  save(); closeModal('reminder-modal'); renderReminders();
-}
-
-function deleteReminder(){
-  if(!editingReminderId) return;
-  reminders=reminders.filter(x=>x.id!==editingReminderId);
-  save(); closeModal('reminder-modal'); renderReminders(); showToast('Reminder deleted');
-}
-
-// ══════════════════════════════════════════
-//  PRODUCTS
-// ══════════════════════════════════════════
-function renderProducts(){
-  document.getElementById('products-grid').innerHTML=Object.entries(PRODUCTS).map(([type,items])=>`
-    <div class="pt-card">
-      <div class="pt-header">${type} <span style="font-weight:400;color:var(--text3);">(${items.length})</span></div>
-      ${items.map(p=>`<div class="product-item"><div class="pi-name">${p.name}</div><div class="pi-carrier">${p.carrier}</div><div class="pi-note">${p.note}</div></div>`).join('')}
-    </div>
-  `).join('');
-}
-
-// ══════════════════════════════════════════
-//  EXPORT / IMPORT
-// ══════════════════════════════════════════
-function exportBackup(){
-  const data={version:2,exported:new Date().toISOString(),carriers,logins,reminders};
-  const a=document.createElement('a');
-  a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));
-  a.download='carrier-tracker-backup.json'; a.click();
-  showToast('Backup downloaded ✓');
-}
-
-function importBackup(e){
-  const file=e.target.files[0]; if(!file) return;
-  const r=new FileReader();
-  r.onload=ev=>{
-    try{
-      const d=JSON.parse(ev.target.result);
-      if(!d.carriers) throw new Error('bad file');
-      const exported=d.exported?new Date(d.exported).toLocaleDateString():'unknown date';
-      if(!confirm(`Import backup from ${exported}? This replaces your current data.`)) return;
-      carriers=d.carriers; logins=d.logins||logins; reminders=d.reminders||reminders;
-      save(); renderAll(); showToast('Backup imported ✓');
-    }catch(err){showToast('Invalid backup file');}
+  recognition.onstart = ()=>{
+    speechBaseText = composerInput.value.trim();
+    setMicState(true);
+    fillerBadge.textContent = 'Listening… speak naturally. Tap stop when finished.';
+    fillerBadge.style.color = 'var(--amber)';
   };
-  r.readAsText(file); e.target.value='';
+
+  recognition.onresult = (event)=>{
+    let finalText = '';
+    let interimText = '';
+    for (let i = 0; i < event.results.length; i++) {
+      const transcript = event.results[i][0].transcript.trim();
+      if (event.results[i].isFinal) finalText += transcript + ' ';
+      else interimText += transcript + ' ';
+    }
+    const spoken = (finalText + interimText).trim();
+    composerInput.value = [speechBaseText, spoken].filter(Boolean).join(' ');
+    composerInput.dispatchEvent(new Event('input', { bubbles: true }));
+  };
+
+  recognition.onerror = (event)=>{
+    setMicState(false);
+    if (event.error === 'not-allowed' || event.error === 'service-not-allowed') {
+      fillerBadge.textContent = 'Microphone permission was blocked. Allow microphone access in your browser and try again.';
+    } else {
+      fillerBadge.textContent = 'Microphone stopped. You can type your response or tap the mic to try again.';
+    }
+    fillerBadge.style.color = 'var(--coral)';
+  };
+
+  recognition.onend = ()=>{
+    setMicState(false);
+    if (composerInput.value.trim()) {
+      composerInput.dispatchEvent(new Event('input', { bubbles: true }));
+    } else {
+      fillerBadge.textContent = defaultBadgeText;
+      fillerBadge.style.color = 'var(--text-faint)';
+    }
+  };
+
+  micBtn.addEventListener('click', ()=>{
+    if (isListening) recognition.stop();
+    else {
+      try { recognition.start(); }
+      catch(e) { /* ignore duplicate start attempts */ }
+    }
+  });
+} else {
+  micBtn.disabled = true;
+  micBtn.title = 'Speech input is not supported in this browser';
+  micBtn.setAttribute('aria-label', micBtn.title);
 }
 
-// ══════════════════════════════════════════
-//  MODAL HELPERS
-// ══════════════════════════════════════════
-function openModal(id){document.getElementById(id).classList.add('open');}
-function closeModal(id){document.getElementById(id).classList.remove('open');}
-document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',function(e){if(e.target===this) this.classList.remove('open');}));
+composerInput.addEventListener('input', ()=>{
+  const { total, found } = analyzeFillers(composerInput.value);
+  if (!composerInput.value.trim()){
+    fillerBadge.textContent = defaultBadgeText;
+    fillerBadge.style.color = 'var(--text-faint)';
+    return;
+  }
+  if (total === 0){
+    fillerBadge.textContent = 'No filler words caught — clean delivery so far.';
+    fillerBadge.style.color = 'var(--teal)';
+  } else {
+    const words = Object.keys(found).join(', ');
+    fillerBadge.textContent = `Filler words in this message: ${total} (${words})`;
+    fillerBadge.style.color = 'var(--coral)';
+  }
+});
 
-// ══════════════════════════════════════════
-//  NAV
-// ══════════════════════════════════════════
-function showSection(id,btn){
-  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
-  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
-  document.getElementById('sec-'+id).classList.add('active');
-  if(btn) btn.classList.add('active');
+// IMPORTANT: Put your Cloudflare Worker URL below after deploying worker.js.
+// Example: https://field-practice-api.YOUR-SUBDOMAIN.workers.dev
+const AI_PROXY_URL = "https://field-practice-convo.hayeshealthysmoke.workers.dev/";
 
+async function callClaude(systemPrompt, userPrompt){
+  if (!AI_PROXY_URL) {
+    throw new Error("AI proxy URL is not configured.");
+  }
+
+  const response = await fetch(AI_PROXY_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ systemPrompt, userPrompt })
+  });
+
+  if (!response.ok) {
+    const detail = await response.text().catch(() => "");
+    throw new Error(`Simulation API error ${response.status}: ${detail}`);
+  }
+
+  const data = await response.json();
+  if (!data || typeof data.text !== "string") {
+    throw new Error("Simulation API returned an invalid response.");
+  }
+  return data.text;
 }
 
-// ══════════════════════════════════════════
-//  TOAST
-// ══════════════════════════════════════════
-let toastT;
-function showToast(msg){
-  const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show');
-  clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove('show'),2600);
+async function sendTurn(){
+  const text = composerInput.value.trim();
+  if (!text || busy) return;
+  busy = true;
+  sendBtn.disabled = true;
+
+  addMsg('rep', text);
+  convo.push({role:'rep', text});
+  const fillerReport = analyzeFillers(text);
+  composerInput.value = '';
+  fillerBadge.textContent = defaultBadgeText;
+  fillerBadge.style.color = 'var(--text-faint)';
+  addTyping();
+
+  const scenario = scenarios[scenarioSelect.value];
+  const temp = tempSelect.value;
+
+  const historyText = convo.map(m => (m.role === 'rep' ? 'REP: ' : 'PROSPECT: ') + m.text).join('\n');
+  const fillerSummary = fillerReport.total > 0
+    ? Object.entries(fillerReport.found).map(([w,c]) => `${w} x${c}`).join(', ')
+    : 'none detected';
+
+  const system = `You are two things at once for a live PRACTICE SIMULATION (never sent anywhere, no real person involved):
+1) A realistic scene partner — a business owner, interviewer, or group participant, depending on the scenario below.
+2) A speech and delivery coach watching for conversational authority: pacing, pausing, vocal weight (implied through phrasing/punctuation), filler words, stuttering/restart patterns, and vocabulary precision (e.g. reaching for "concept" instead of just "idea", or a concrete noun instead of a vague one).
+
+SCENARIO: ${scenario.context}
+TEMPERAMENT / ROOM ENERGY: ${temp} (warm = receptive, gives openings; neutral = polite but needs convincing; skeptical/high-pressure = guarded or talks over the rep, realistic pushback or interruption).
+
+Conversation so far:
+${historyText}
+
+Client-side filler-word scan of the rep's LAST message (treat this as accurate — do not re-count yourself): ${fillerSummary}. Total: ${fillerReport.total}.
+
+Respond with STRICT JSON only, no markdown fences, no preamble, in this exact shape:
+{
+  "reply": "the scene partner's next line, 1-4 sentences, natural and realistic for the scenario and temperament — including interrupting mid-sentence if the scenario calls for it",
+  "rapport_delta": <integer from -15 to 15 reflecting how the rep's last message landed with this scene partner>,
+  "coach_tip": "one short, specific, encouraging tip (under 25 words) on delivery — pacing, pausing, holding the floor, or recovering from interruption — referencing what worked or what to try next",
+  "filler_note": "if the filler-word scan found anything, one short actionable line (under 22 words) on replacing a specific filler with a pause instead; empty string if none were found",
+  "vocab_upgrade": "if a plain or vague word/phrase in the rep's message could be swapped for a more precise or expanded one, name the swap in under 18 words (e.g. 'Try \\"concept\\" instead of \\"idea\\" — it carries more weight'); empty string if nothing stands out"
+}`;
+
+  try {
+    const raw = await callClaude(system, "Continue the roleplay now.");
+    let clean = raw.replace(/```json|```/g, '').trim();
+    let parsed;
+    try { parsed = JSON.parse(clean); }
+    catch(e){ parsed = { reply: clean || "...", rapport_delta: 0, coach_tip: "", filler_note: "", vocab_upgrade: "" }; }
+
+    removeTyping();
+    addMsg('prospect', parsed.reply || '...');
+    speakProspectReply(parsed.reply || '');
+    convo.push({role:'prospect', text: parsed.reply || ''});
+    if (typeof parsed.rapport_delta === 'number') setRapport(rapport + parsed.rapport_delta);
+    if (parsed.coach_tip) addMsg('coach', '💡 ' + parsed.coach_tip);
+    if (parsed.filler_note) addMsg('coach', '🎙️ ' + parsed.filler_note);
+    if (parsed.vocab_upgrade) addMsg('coach', '📈 ' + parsed.vocab_upgrade);
+  } catch(err){
+    removeTyping();
+    addMsg('coach', AI_PROXY_URL ? 'The simulation service could not respond. Check the Worker/API configuration and try again.' : 'AI roleplay is not connected yet. Add your Cloudflare Worker URL to AI_PROXY_URL in this file.');
+  }
+
+  busy = false;
+  sendBtn.disabled = false;
+  composerInput.focus();
 }
 
-// ══════════════════════════════════════════
-//  INIT
-// ══════════════════════════════════════════
-function renderAll(){ renderCarriers(); renderLogins(); renderReminders(); renderQuickDial(); renderProducts(); }
-load(); renderAll();
+sendBtn.addEventListener('click', sendTurn);
+composerInput.addEventListener('keydown', (e)=>{
+  if (e.key === 'Enter' && !e.shiftKey){
+    e.preventDefault();
+    sendTurn();
+  }
+});
+
+/* ---------------- TRACKER ---------------- */
+const metrics = [
+  { key:'connections', name:'New Connection Requests', goal:20 },
+  { key:'personal', name:'Personalized Messages', goal:20 },
+  { key:'followups', name:'Follow-up Messages', goal:15 },
+  { key:'comments', name:'Comments on Local Posts', goal:10 },
+  { key:'referrals', name:'Referrals Requested', goal:3 },
+  { key:'appointments', name:'Appointments Booked', goal:2 },
+];
+
+let counts = {};
+metrics.forEach(m => counts[m.key] = 0);
+
+const STORE_KEY = 'daily-activity-counts';
+
+function loadCounts(){
+  try {
+    const raw = localStorage.getItem(STORE_KEY);
+    if (raw) {
+      const saved = JSON.parse(raw);
+      const today = new Date().toDateString();
+      if (saved.date === today && saved.counts) {
+        counts = { ...counts, ...saved.counts };
+      } else {
+        localStorage.removeItem(STORE_KEY);
+      }
+    }
+  } catch(e) {
+    console.warn('Could not load saved tracker data', e);
+  }
+  renderTracker();
+}
+
+function saveCounts(){
+  try {
+    localStorage.setItem(STORE_KEY, JSON.stringify({ date: new Date().toDateString(), counts }));
+  } catch(e) {
+    console.error('storage save failed', e);
+  }
+}
+
+function renderTracker(){
+  const grid = document.getElementById('trackerGrid');
+  grid.innerHTML = '';
+  metrics.forEach(m => {
+    const val = counts[m.key] || 0;
+    const pct = Math.min(100, Math.round((val / m.goal) * 100));
+    const card = document.createElement('div');
+    card.className = 'metric-card';
+    card.innerHTML = `
+      <div class="metric-name">${m.name}</div>
+      <div class="metric-row">
+        <div>
+          <div class="metric-count">${val}</div>
+          <div class="metric-goal">goal: ${m.goal}</div>
+        </div>
+        <div class="stepbtns">
+          <button class="stepbtn" data-key="${m.key}" data-dir="-1">–</button>
+          <button class="stepbtn" data-key="${m.key}" data-dir="1">+</button>
+        </div>
+      </div>
+      <div class="metric-bar"><div class="metric-bar-fill" style="width:${pct}%"></div></div>
+    `;
+    grid.appendChild(card);
+  });
+  grid.querySelectorAll('.stepbtn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const key = btn.dataset.key;
+      const dir = parseInt(btn.dataset.dir, 10);
+      counts[key] = Math.max(0, (counts[key] || 0) + dir);
+      renderTracker();
+      updateShield();
+      saveCounts();
+    });
+  });
+  updateShield();
+}
+
+function updateShield(){
+  const appt = counts['appointments'] || 0;
+  const goal = 2;
+  document.getElementById('shieldNum').textContent = appt + '/' + goal;
+  const fillOpacity = appt >= goal ? 0.55 : 0.18;
+  document.getElementById('shieldFill').setAttribute('opacity', fillOpacity);
+}
+
+document.getElementById('resetDayBtn').addEventListener('click', ()=>{
+  metrics.forEach(m => counts[m.key] = 0);
+  renderTracker();
+  saveCounts();
+});
+
+loadCounts();
 </script>
+
 </body>
 </html>
